@@ -5,6 +5,8 @@
   import IconButton from '@smui/icon-button';
   import MediaListView from "./MediaListView.svelte";
   import PlayerView from "./PlayerView.svelte";
+  import {MediaFile} from "./store/BooClient";
+  import { tick } from 'svelte';
 
   export let margin = "8px"
   let clientWidth
@@ -19,6 +21,13 @@
   // $: console.log(`client: ${clientWidth} x ${clientHeight} / offset ${offsetWidth} x ${offsetHeight}`)
   // $: console.log(`window inner ${windowInnerWidth} x ${windowInnerHeight} / outer ${windowOuterWidth} x ${windowOuterHeight}`)
   $: console.log(`BodyView nav bar height=${navBarHeight}`)
+  let currentMedia:MediaFile
+
+  function mediaChanged(event) {
+    // currentMedia = null
+    // tick()
+    currentMedia = event.detail.media
+  }
 </script>
 
 <div class="app-root" style:--margin={margin}>
@@ -27,8 +36,8 @@
   </div>
   <div class="client-pane" style:--nav-var-height="{navBarHeight}px">
     <BodyView>
-      <MediaListView slot="drawer"/>
-      <PlayerView slot="main"/>
+      <MediaListView slot="drawer" on:media_selected={mediaChanged}/>
+      <PlayerView slot="main" media="{currentMedia}"/>
     </BodyView>
   </div>
 </div>

@@ -1,21 +1,31 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import {MediaFile, currentMedia} from "./store/BooClient";
+    import {MediaFile} from "./store/BooClient";
     import { serverListCommand } from "./store/Settings"
-    let paused=false
+
+    export let media:MediaFile|undefined
+
+    let player
     function togglePlay(event:Event) {
-        paused = !paused
+        if(player.paused) {
+            player.play()
+        } else {
+            player.pause()
+        }
     }
 </script>
 
 <div class="player-view">
+    {#if media}
     <video
-        src={$currentMedia?.url() ?? ""}
+        bind:this={player}
+        src={media.url()}
         on:mousedown={togglePlay}
-        bind:paused
+        autoplay
         >
         <track kind="captions">
     </video>
+    {/if}
 </div>
 
 <style lang="sass">

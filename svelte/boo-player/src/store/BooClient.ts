@@ -62,5 +62,3 @@ export function retrieveMediaList(url:string) {
         })
 }
 
-export const currentMedia = writable<MediaFile|undefined>()
-
