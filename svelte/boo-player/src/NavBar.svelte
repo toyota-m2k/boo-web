@@ -7,7 +7,7 @@
         variant="static"
         dense=true
         color={'primary'}
->
+        >
     <Row>
         <Section>
             <IconButton class="material-icons">menu</IconButton>
