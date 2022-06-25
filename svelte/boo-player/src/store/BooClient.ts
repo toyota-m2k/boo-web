@@ -33,10 +33,14 @@ export class MediaFile {
     }
 }
 
+let currentUrl:String
 export const mediaList = writable<Array<MediaFile>>([])
 export const error = writable<string|null>(null)
 
 export function retrieveMediaList(url:string) {
+    if(url==currentUrl) {
+        return
+    }
     fetch(url)
         .then(response=> {
             return response.json()
@@ -51,12 +55,12 @@ export function retrieveMediaList(url:string) {
                 let v = json.list[i]
                 medias.push(new MediaFile(v.id, v.type, v.name, v.size, v.duration))
             }
-
-
+            currentUrl = url
             mediaList.set(medias)
             return Promise.resolve()
         })
         .catch(reason=>{
+            currentUrl = null
             console.error(reason)
             error.set(reason.toString())
         })

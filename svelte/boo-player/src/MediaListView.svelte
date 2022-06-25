@@ -4,9 +4,6 @@
     import { serverListCommand } from "./store/Settings"
     import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
     const dispatch = createEventDispatcher()
-    onMount(()=> {
-        retrieveMediaList(serverListCommand)
-    })
     let selectedMedia:MediaFile|null = null
     $: dispatch('media_selected', {
         media: selectedMedia

@@ -1,20 +1,37 @@
 <script lang="ts">
+    import {fullscreen} from "./store/Settings.js";
+    import { tweened } from 'svelte/motion';
+    import { cubicOut } from 'svelte/easing';
+
+
     /**
      * 左右に分割するビュー
      * もうすこし頑張れば上下にも分割できると思うが。。。
      */
     export let minDrawerWidth = 100
     export let maxDrawerRatio = 0.8
-    export let drawerWidth = 400
+    // export let drawerWidth = 400
     export let trackerWidth=5
-    let viewWidth:Number
+    let viewWidth:Number = 800
     let dragging:Boolean = false
-    let orgDrawerWidth:Number = 0
+    let orgDrawerWidth:Number = 400
     let clickX:Number = 0
     let tracker;
+    const drawerWidth = tweened<Number>(400, {
+        duration: (from, to) => {
+            return Math.abs(to-from)
+        },
+        easing: cubicOut
+    })
     function onPointerDown(e:PointerEvent) {
+        // if($fullscreen) {
+        //     return
+        // }
         dragging = true
-        orgDrawerWidth = drawerWidth
+        orgDrawerWidth = $drawerWidth
+        // drawerWidth.update((v)=>{
+        //     orgDrawerWidth=v;
+        //     return v;})
         clickX = e.pageX
         console.log(`mouse down on tracker: button=${e.pointerId} click=${clickX}, org=${orgDrawerWidth}`)
         tracker.setPointerCapture(e.pointerId)
@@ -31,19 +48,29 @@
     // }
     function onPointerMove(e:MouseEvent) {
         if(dragging) {
-            // console.log("mouse move with tracker")
+            console.log(`mouse move with tracker org-w:${orgDrawerWidth} (${e.pageX})`)
             let w = orgDrawerWidth + (e.pageX - clickX)
-            drawerWidth = Math.max(minDrawerWidth, Math.min(w, viewWidth*maxDrawerRatio))
+            $drawerWidth = Math.max(minDrawerWidth, Math.min(w, viewWidth*maxDrawerRatio))
         }
     }
+
+    fullscreen.subscribe((v)=>{
+        if(v) {
+            orgDrawerWidth = $drawerWidth
+            $drawerWidth = 0
+        } else {
+            $drawerWidth = Math.max(minDrawerWidth, Math.min(orgDrawerWidth, viewWidth*maxDrawerRatio))
+        }
+    })
 </script>
 
 <div class="content-view" bind:clientWidth={viewWidth}>
-    <div class="drawer" style:width="{drawerWidth}px">
+    <div class="drawer" style:width="{$drawerWidth}px">
         <slot name="drawer"/>
     </div>
-
-    <div class="tracker" style:width="{trackerWidth}px" bind:this={tracker} on:pointerdown|preventDefault={onPointerDown} on:pointerup|preventDefault={onPointerUp}></div>
+    {#if !$fullscreen}
+      <div class="tracker" style:width="{trackerWidth}px" bind:this={tracker} on:pointerdown|preventDefault={onPointerDown} on:pointerup|preventDefault={onPointerUp}></div>
+    {/if}
     <div class="main">
         <slot name="main"/>
     </div>

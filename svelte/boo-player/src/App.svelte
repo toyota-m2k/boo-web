@@ -5,14 +5,18 @@
   import IconButton from '@smui/icon-button';
   import MediaListView from "./MediaListView.svelte";
   import PlayerView from "./PlayerView.svelte";
-  import {MediaFile} from "./store/BooClient";
-  import { tick } from 'svelte';
+  import {MediaFile, retrieveMediaList} from "./store/BooClient";
+  import {onMount, tick} from 'svelte';
+  import {fullscreen, serverListCommand} from "./store/Settings.js";
+  import { fade, slide } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
 
   export let margin = "8px"
   let clientWidth
   let clientHeight
   let offsetWidth
   let offsetHeight
+  let rawNavBarHeight
   let navBarHeight
   // let windowInnerWidth
   // let windowInnerHeight
@@ -20,20 +24,33 @@
   // let windowOuterHeight
   // $: console.log(`client: ${clientWidth} x ${clientHeight} / offset ${offsetWidth} x ${offsetHeight}`)
   // $: console.log(`window inner ${windowInnerWidth} x ${windowInnerHeight} / outer ${windowOuterWidth} x ${windowOuterHeight}`)
-  $: console.log(`BodyView nav bar height=${navBarHeight}`)
+  // $: console.log(`BodyView nav bar height=${rawNavBarHeight}`)
   let currentMedia:MediaFile
 
+  $: if($fullscreen) {
+    navBarHeight = 0
+    console.log(`fullscreen: ${navBarHeight}`)
+  } else if (rawNavBarHeight) {
+    navBarHeight = rawNavBarHeight
+    console.log(`not full: ${navBarHeight}`)
+  }
   function mediaChanged(event) {
     // currentMedia = null
     // tick()
     currentMedia = event.detail.media
   }
+  onMount(()=> {
+    retrieveMediaList(serverListCommand)
+  })
+
 </script>
 
 <div class="app-root" style:--margin={margin}>
-  <div class="nav-bar-pane" bind:clientHeight={navBarHeight}>
-    <NavBar/>
-  </div>
+  {#if !$fullscreen}
+    <div class="nav-bar-pane" bind:clientHeight={rawNavBarHeight} transition:fade>
+      <NavBar/>
+    </div>
+  {/if}
   <div class="client-pane" style:--nav-var-height="{navBarHeight}px">
     <BodyView>
       <MediaListView slot="drawer" on:media_selected={mediaChanged}/>
