@@ -16,38 +16,38 @@
     let paused
 
     let showPanel:Boolean = false
-    let controlPanel
+    // let controlPanel
 
     let controlPanelOpacity = tweened(0, {duration:500, easing:cubicOut})
 
-    $: if(controlPanel) {
-        if(showPanel) {
-            controlPanel.animate(    // キーフレーム
-                [
-                    {opacity: 0},
-                    {opacity: 1}
-                ],
-                // オプション
-                {
-                    duration: 500,      // アニメが終了するまでの時間(ミリ秒)
-                    fill: 'forwards'    // アニメ完了後に最初の状態に戻さない
-                }
-            )
+    $: if(showPanel) {
+            $controlPanelOpacity = 1
+            // controlPanel.animate(    // キーフレーム
+            //     [
+            //         {opacity: 0},
+            //         {opacity: 1}
+            //     ],
+            //     // オプション
+            //     {
+            //         duration: 500,      // アニメが終了するまでの時間(ミリ秒)
+            //         fill: 'forwards'    // アニメ完了後に最初の状態に戻さない
+            //     }
+            // )
         }
         else {
-            controlPanel.animate(    // キーフレーム
-                [
-                    {opacity: 1},
-                    {opacity: 0}
-                ],
-                // オプション
-                {
-                    duration: 500,      // アニメが終了するまでの時間(ミリ秒)
-                    fill: 'forwards'    // アニメ完了後に最初の状態に戻さない
-                }
-            )
+            $controlPanelOpacity = 0
+            // controlPanel.animate(    // キーフレーム
+            //     [
+            //         {opacity: 1},
+            //         {opacity: 0}
+            //     ],
+            //     // オプション
+            //     {
+            //         duration: 500,      // アニメが終了するまでの時間(ミリ秒)
+            //         fill: 'forwards'    // アニメ完了後に最初の状態に戻さない
+            //     }
+            // )
         }
-    }
 
     function togglePlay() {
         if(player.paused) {
@@ -94,9 +94,12 @@
 
             のように指定してみた。しかし、最初にロードされたときに１度アニメーションするだけで、その後は、単に opacity が（一瞬で）変化するだけだった。
             最後の手段として、Element.animate() 関数を使ってプログラム的にアニメーションするようにした。
+
+            後になって、svelte には、transition （DOMノードの追加/削除で発動）以外に、tweened という、素のアニメーション機能があったことを思いだした。
+            これを使うと、DOMノードを取り出す、イベントハンドラでanimate()を呼ぶ、などの処理が、style:opacityにtweened （controlPanelOpacity）をバインドするだけで実現できた。
          -->
-        <div class={`control-panel`} bind:this={controlPanel}>
-            <ControlPanel duration={duration} bind:position={currentTime} playing={!paused} on:toggle_play={togglePlay}/>
+        <div class={`control-panel`} style:opacity={$controlPanelOpacity}>
+            <ControlPanel duration={duration} bind:position={currentTime} playing={!paused} on:toggle_play={togglePlay} on:next on:prev/>
         </div>
     {/if}
 </div>

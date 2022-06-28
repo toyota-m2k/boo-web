@@ -1,21 +1,20 @@
 <script lang="ts">
     import { onMount, createEventDispatcher } from 'svelte';
-    import {MediaFile, mediaList, retrieveMediaList} from "./store/BooClient";
+    import {MediaFile} from "./store/BooClient";
     import { serverListCommand } from "./store/Settings"
     import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
-    const dispatch = createEventDispatcher()
-    let selectedMedia:MediaFile|null = null
-    $: dispatch('media_selected', {
-        media: selectedMedia
-        })
+
+    export let currentMedia:MediaFile = null
+    export let mediaList:Array<MediaFile>
+
 </script>
 
 <div class="media-list-view">
     <List>
-    {#each $mediaList as media (media.id)}
+    {#each mediaList as media (media.id)}
         <Item
-            selected={selectedMedia===media}
-            on:SMUI:action={() => (selectedMedia = media)}
+            selected={currentMedia===media}
+            on:SMUI:action={() => (currentMedia = media)}
             >
             <Text>
                 <PrimaryText>{media.title}</PrimaryText>

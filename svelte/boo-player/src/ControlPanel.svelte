@@ -18,12 +18,12 @@
 </script>
 
 <div class="control-panel-view">
-    <IconButton class="material-icons" on:click={nop}>skip_previous</IconButton>
+    <IconButton class="material-icons" on:click={()=>dispatch("prev")}>skip_previous</IconButton>
     <IconButton on:click={()=>dispatch("toggle_play")} toggle bind:pressed={playing}>
         <Icon class="material-icons">play_arrow</Icon>
         <Icon class="material-icons" on>pause</Icon>
     </IconButton>
-    <IconButton class="material-icons" on:click={nop}>skip_next</IconButton>
+    <IconButton class="material-icons" on:click={()=>dispatch("next")}>skip_next</IconButton>
     <div style:width="100%">
         <Slider class="slider" min={0} max={duration} bind:value={position}/>
     </div>

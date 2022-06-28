@@ -1,6 +1,6 @@
 import { writable, readable } from 'svelte/store'
 import type {Readable} from "svelte/types/runtime/store";
-import { serverItemCommand } from './Settings'
+import {composeListCommand, serverItemCommand, serverUrl} from './Settings'
 
 export class MediaFile {
     duration: number;
@@ -37,10 +37,18 @@ let currentUrl:String
 export const mediaList = writable<Array<MediaFile>>([])
 export const error = writable<string|null>(null)
 
-export function retrieveMediaList(url:string) {
+export function retrieveMediaList() {
+    let url:string // = serverUrl + "ytplayer/list/" // composeListCommand()
+    try {
+        url = composeListCommand()
+    } catch(e) {
+        console.error(e)
+        url = serverUrl + "ytplayer/list/"
+    }
     if(url==currentUrl) {
         return
     }
+    console.log(`loading: ${url}`)
     fetch(url)
         .then(response=> {
             return response.json()
