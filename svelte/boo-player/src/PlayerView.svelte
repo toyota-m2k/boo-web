@@ -81,6 +81,7 @@
             bind:ended
             autoplay
             >
+            <track kind="captions">
         </video>
         <!--
             最初は、アニメーションするために、transition:fade を指定して、
@@ -109,7 +110,7 @@
       width: 100%
       position: relative
       box-sizing: border-box
-      background-color: darkslateblue
+      //background-color: darkslateblue
       video
         width: 100%
       .control-panel

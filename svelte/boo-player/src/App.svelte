@@ -114,7 +114,7 @@
   .app-root
     display: flex
     flex-direction: column
-    background-color: darkblue
+    //background-color: darkblue
     --max-height: calc(100vh - var(--margin)*2)
     --max-width: calc(100vw - var(--margin)*2)
     height: var(--max-height)

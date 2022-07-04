@@ -35,6 +35,6 @@
       max-height: var(--max-height)
       overflow-y: auto
       overflow-x: auto
-      background-color: darksalmon
+      //background-color: darksalmon
       box-sizing: border-box
 </style>

@@ -54,7 +54,7 @@
     <Title class="title">Settings</Title>
     <Content class="content">
         <div>
-            <label>Source</label>
+            <div>Source</div>
             {#each SourceType.types as option}
                 <FormField>
                     <Radio bind:group={SourceType.activeSourceType} value={option} touch />
@@ -63,7 +63,7 @@
             {/each}
         </div>
         <div>
-            <label>Mark</label>
+            <div>Mark</div>
             <div class="mark_buttons">
                 {#each Mark.marks as mark}
                     <IconButton aria-label={mark.name} toggle bind:pressed={mark.selected}>
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div>
-            <label>Rating</label>
+            <div>Rating</div>
             <div class="rating_box">
                 <div class="svg_icon">
                     <Icon class="dialog_check_on" component="{Svg}" viewBox="0 0 24 24">

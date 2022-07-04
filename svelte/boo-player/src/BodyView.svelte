@@ -79,17 +79,28 @@
 <style lang="sass">
   .content-view
     display: flex
-    background-color: aqua
+    //background-color: aqua
     flex-direction: row
     height: 100%
     width: 100%
-  .tracker
-    cursor: col-resize
-  .drawer
-    background-color: blueviolet
-    height: 100%
-  .main
-    background-color: darkcyan
-    height: 100%
-    flex-grow: 1
+    --margin-top: 4px
+    --max-height: calc(100% - var(--margin-top))
+    .tracker
+      cursor: col-resize
+    .drawer
+      margin-top: var(--margin-top)
+      padding: 5px
+      height: var(--max-height)
+      border: 1px solid gray
+      border-radius: 5px
+      box-sizing: border-box
+    .main
+      margin-top: var(--margin-top)
+      padding: 5px
+      height: var(--max-height)
+      border: 1px solid gray
+      border-radius: 5px
+      box-sizing: border-box
+      background-color: black
+      flex-grow: 1
 </style>
