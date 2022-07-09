@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import {MediaFile} from "./store/BooClient";
-    import { serverListCommand } from "./store/Settings"
     import ControlPanel from "./ControlPanel.svelte";
     import { fade, slide } from 'svelte/transition';
     import { tweened } from 'svelte/motion';

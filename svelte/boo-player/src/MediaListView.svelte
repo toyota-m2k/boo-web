@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount, createEventDispatcher } from 'svelte';
     import {MediaFile} from "./store/BooClient";
-    import { serverListCommand } from "./store/Settings"
     import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
 
     export let currentMedia:MediaFile = null

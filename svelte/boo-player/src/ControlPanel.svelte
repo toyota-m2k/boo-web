@@ -1,10 +1,7 @@
 <script lang="ts">
     import Slider from '@smui/slider';
     import IconButton, { Icon } from '@smui/icon-button';
-    import Button, { Label } from '@smui/button';
     import {createEventDispatcher, onMount} from 'svelte';
-    import {MediaFile} from "./store/BooClient";
-    import { serverListCommand } from "./store/Settings"
     import {fullscreen} from "./store/Settings.js";
     const dispatch = createEventDispatcher()
 
@@ -25,9 +22,9 @@
     </IconButton>
     <IconButton class="material-icons" on:click={()=>dispatch("next")}>skip_next</IconButton>
     <div style:width="100%">
-        <Slider class="slider" min={0} max={duration} bind:value={position}/>
+        <Slider class="slider" min={0} max={duration} bind:value={position} color="secondary"/>
     </div>
-    <IconButton class="material-icons" on:click={nop} toggle bind:pressed={$fullscreen}>
+    <IconButton class="material-icons" on:click={nop} toggle bind:pressed={$fullscreen} style="ink-color(#red)">
         <Icon class="material-icons">open_in_full</Icon>
         <Icon class="material-icons" on>close_fullscreen</Icon>
     </IconButton>
@@ -36,8 +33,16 @@
 
 <style lang="sass">
     .control-panel-view
+      // コントロールパネルは黒基調なので、黒の上に描いても見えるよう、テーマカラーの一部を置き換える。
+      --mdc-theme-primary: #FF00ff
+      --mdc-theme-secondary: #FFc418
       display: flex
       flex-direction: row
       align-items: center
-      //background-color: chartreuse
+      background-color: rgba(0,0,0,0.8)
+    // アイコンボタンの色
+    // mdc のクラスに直接色を設定する場合は、:global() で設定する。
+    // ↑ローカルなクラスは、コンパイルすると、何やらidのような文字が追加されて、別のクラスになってしまう。
+    :global(.mdc-icon-button)
+      color: var(--mdc-theme-secondary)
 </style>
