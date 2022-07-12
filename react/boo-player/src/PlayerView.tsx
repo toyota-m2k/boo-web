@@ -4,6 +4,7 @@ import {Box, duration} from "@mui/material";
 // import {PlayingItemInfo, playingItemInfo} from "./store/PlayingItemInfo";
 import ControlPanel from "./ControlPanel";
 import { styled, useTheme } from '@mui/material/styles';
+import { Transition } from 'react-transition-group'
 
 const Player = styled('video')(({theme})=>({
     width: '100%'
@@ -24,6 +25,18 @@ const Dummy = styled('div')(({theme})=>({
     width: '100%',
     backgroundColor: 'green'
 }))
+
+function hoge() {
+    const [duration, setDuration] = useState(0)
+    const [playing, setPlaying] = useState(false)
+    const [fullscreen, setFullscreen] = useState(false)
+    const [currentTime, setCurrentTime] = useState(0)
+    const [panelVisible, showPanel] = useState(false)
+
+    return <Box>
+        {playing && <div/>}
+    </Box>
+}
 
 export default function PlayerView(prop:PlayerViewProp) {
     const videoElement = useRef<HTMLVideoElement>(null)
@@ -70,6 +83,14 @@ export default function PlayerView(prop:PlayerViewProp) {
     //     console.log("onTimeUpdate:"+e)
     // }
 
+    const fadeInOutStyles = {
+        entering: { opacity: 1, transition: 'all 1s ease' },
+        entered: { opacity: 1},
+        exiting: { opacity: 0, transition: 'all 1s ease' },
+        exited: { opacity: 0 },
+        unmounted: {},
+    }
+
     const [duration, setDuration] = useState(0)
     const [playing, setPlaying] = useState(false)
     const [fullscreen, setFullscreen] = useState(false)
@@ -102,7 +123,10 @@ export default function PlayerView(prop:PlayerViewProp) {
 
     if(url) {
         return (
-            <Box sx={{position:'relative'}}>
+            <Box sx={{position:'relative'}}
+                onMouseEnter={()=>{showPanel(true)}}
+                onMouseLeave={()=>{showPanel(false)}}
+                >
                 <Player
                     ref={videoElement}
                     src={url}
@@ -113,16 +137,20 @@ export default function PlayerView(prop:PlayerViewProp) {
                     // onProgress={onProgress}
                     onDurationChange={onDurationChanged}
                     onTimeUpdate={onTimeUpdate}
-                    onMouseEnter={()=>{showPanel(true)}}
-                    onMouseLeave={()=>{showPanel(false)}}
                     // onTimeUpdateCapture={onTimeUpdateCapture}
                 />
-                {panelVisible && <Box sx={{position:'absolute', bottom:'7px', width:'100%'}}>
-                    <ControlPanel playing={playing} fullscreen={fullscreen} currentTime={currentTime} duration={duration} onSeeked={onSeeked} onPlay={onPlayFromControlPanel} onFullscreen={onFullscreen}/>
-                </Box>}
+                <Box sx={{position:'absolute', bottom:'7px', width:'100%'}}>
+                    <Transition in={panelVisible} timeout={1500}>
+                        {(visible)=>
+                            <div style={fadeInOutStyles[visible]}>
+                                <ControlPanel playing={playing} fullscreen={fullscreen} currentTime={currentTime} duration={duration} onSeeked={onSeeked} onPlay={onPlayFromControlPanel} onFullscreen={onFullscreen}/>
+                            </div>
+                        }
+                    </Transition>
+                </Box>
             </Box>
         )
     } else {
-        return (<div/>)
+        return <div/>
     }
 }

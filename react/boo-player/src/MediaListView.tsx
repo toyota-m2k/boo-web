@@ -20,8 +20,7 @@ export default function MediaListView(prop:MediaListViewProp) {
         prop.onSelected?.(v)
     }
 
-    return (
-        <List dense={false}>
+    return <List dense={false}>
             { prop.mediaList.map((v:MediaFile)=> {
                 // console.log(v.mediaId + ", current="+prop.currentMedia?.mediaId + ` (${prop.currentMedia?.mediaId==v.mediaId})`)
                 return (
@@ -38,5 +37,4 @@ export default function MediaListView(prop:MediaListViewProp) {
                 )
             })}
         </List>
-    )
 }

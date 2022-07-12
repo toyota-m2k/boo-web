@@ -26,6 +26,8 @@ import MediaListView from "./MediaListView";
 import * as React from "react";
 import PlayerView from "./PlayerView";
 import {PlayingItemInfo, playingItemInfo} from "./store/PlayingItemInfo";
+import {Settings} from "@mui/icons-material";
+import SettingDialog from "./dialog/SettingDialog";
 
 const drawerWidth = 240;
 
@@ -83,6 +85,7 @@ export function PersistentDrawerLeft() {
   const [open, setOpen] = useState(false);
   const [currentMedia, setCurrentMedia] = useState<MediaFile|null>(null)
   const [mediaList, setMediaList] = React.useState<Array<MediaFile>>([])
+  const [settingDialogOpened, openSettingDialog] = useState(false)
 
   useEffect(()=>{
     const s = observableMediaList.subscribe((v)=>{
@@ -110,6 +113,15 @@ export function PersistentDrawerLeft() {
     setCurrentMedia(v)
   }
 
+  const handleSetting = () => {
+    openSettingDialog(true)
+  }
+
+  const onSettingCompleted = () => {
+    openSettingDialog(false)
+  }
+
+  const title = currentMedia?.title ?? "boo player"
   return (
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -124,9 +136,16 @@ export function PersistentDrawerLeft() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Persistent drawer
+            <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
+              {title}
             </Typography>
+            <IconButton
+                color="inherit"
+                aria-label="settings..."
+                onClick={handleSetting}
+                edge="start">
+              <Settings/>
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -154,6 +173,7 @@ export function PersistentDrawerLeft() {
           <DrawerHeader />
           <PlayerView mediaFile={currentMedia}/>
         </Main>
+        <SettingDialog open={settingDialogOpened} onComplete={onSettingCompleted}/>
       </Box>
   );
 }

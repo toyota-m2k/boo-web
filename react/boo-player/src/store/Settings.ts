@@ -1,3 +1,5 @@
+import * as Icons from "@mui/icons-material"
+
 export let serverUrl = "http://localhost:3500/"
 if(document.documentURI.endsWith("/ytplayer/")) {
     serverUrl = document.documentURI
@@ -10,31 +12,29 @@ export const serverItemCommand = `${serverUrl}ytplayer/video`
 // export const fullscreen = writable<Boolean>(false)
 
 export class Rating {
-    level?:number
-    name?:string
-    iconOn?: string
-    iconOff?: string
-    selected?:boolean = false
+    level:number
+    name:string
+    iconOn: string
+    iconOff: string
+    selected:boolean = false
 
-    constructor(obj: Partial<Rating>);
-    constructor(level:number, name:string, iconOn:string, iconOff:string)
-    // {
-    //     if(obj in)
-    //     this.level = level
-    //     this.name = name
-    //     this.iconOn = iconOn
-    //     this.iconOff = iconOff
-    // }
-    constructor(a:any, name?:string, iconOn?:string, iconOff?:string) {
-        if(!name) {
-            Object.assign(this, a)
-        } else {
-            this.level = a
-            this.name = name
-            this.iconOn = iconOn
-            this.iconOff = iconOff
-        }
+    constructor(level:number, name:string, iconOn:string, iconOff:string) {
+        this.level = level
+        this.name = name
+        this.iconOn = iconOn
+        this.iconOff = iconOff
     }
+
+    // constructor(a:any, name?:string, iconOn?:string, iconOff?:string) {
+    //     if(!name) {
+    //         Object.assign(this, a)
+    //     } else {
+    //         this.level = a
+    //         this.name = name
+    //         this.iconOn = iconOn
+    //         this.iconOff = iconOff
+    //     }
+    // }
 
 
 
@@ -78,34 +78,35 @@ export class Rating {
 }
 
 export class Mark {
-    id?:number
-    name?:string
-    iconOn?:string
-    iconOff?:string
+    id:number
+    name:string
+    iconOn: keyof typeof Icons
+    iconOff: keyof typeof Icons
     selected:boolean = false
-    constructor(obj: Partial<Rating>);
-    constructor(id:number, name:string, iconOn:string, iconOff:string)
-    constructor(obj:any, name?:string, iconOn?:string, iconOff?:string) {
-        if(name) {
-            this.id = obj
-            this.name = name
-            this.iconOn = iconOn
-            this.iconOff = iconOff
-        } else {
-            Object.assign(this, obj)
-        }
+    constructor(id:number, name:string, iconOn:keyof typeof Icons, iconOff:keyof typeof Icons) {
+        this.id = id
+        this.name = name
+        this.iconOn = iconOn
+        this.iconOff = iconOff
     }
 
-    static markNone = new Mark(0, "None", "", "")
+    clone():Mark {
+        const src = this;
+        const r = new Mark(src.id, src.name, src.iconOn, src.iconOff)
+        r.selected = src.selected
+        return r;
+    }
+
+    static markNone = new Mark(0, "None", "Circle", "Circle")
     static markStar = new Mark(1, "Star",
-        "star",
-        "star_outline")
+        "Star",
+        "StarOutline")
     static markFlag= new Mark(2, "Flag",
-        "flag",
-        "outlined_flag")
+        "Flag",
+        "OutlinedFlag")
     static markHeart= new Mark(3, "Heart",
-        "favorite",
-        "favorite_border")
+        "Favorite",
+        "FavoriteBorder")
 
     static marks = [this.markStar, this.markFlag, this.markHeart]
 
@@ -117,6 +118,15 @@ export class Mark {
             } else return acc
         }, "")
     }
+
+    static setMarks(m:Array<Mark>):void {
+        this.marks = m
+    }
+
+    static fromName(label:string):Mark|undefined {
+        return this.marks.find(it=>it.name===label)
+    }
+
 
     private static pushed?:Array<boolean>
 
@@ -148,6 +158,10 @@ export class SourceType {
 
     static types = [this.all, this.listed, this.selected]
 
+    static fromLabel(label:string):SourceType|undefined {
+        return this.types.find(it=>it.label===label)
+    }
+
     static activeSourceType:SourceType = this.all
 
     private static pushedSourceType?:SourceType
@@ -175,7 +189,7 @@ export function popCurrentSettings() {
     SourceType.pop()
 }
 
-export function composeListCommand() {
+export function composeListCommand():string {
     const sp = new URLSearchParams()
     if(SourceType.activeSourceType.id!=SourceType.all.id) {
         sp.append("s", SourceType.activeSourceType.id.toString())
