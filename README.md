@@ -54,7 +54,7 @@ React用のメジャーっぽい、Materialデザインフレームワーク `mu
 JSのコードの中に、JSXに慣れていないので、「HTMLをJSのコードの中に書く」のが気持ち悪かった。
 
 ### Vue
-![vue](https://user-images.githubusercontent.com/11642381/183824818-b1e4c8f0-3dd2-4dba-8451-f0caf12be6fb.png)
+![vue](https://user-images.githubusercontent.com/11642381/183862811-7b8d8300-a24d-498b-a6a5-c2d91fdcca86.png)
 
 ３つのフレームワーク中、いちばんキツかった。
 Vue2の書き方(Options API)とVue3の書き方(Component API)があり、公式ドキュメントが Vue2 のOptions API の説明から入っていたし、
