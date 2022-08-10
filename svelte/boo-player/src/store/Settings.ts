@@ -1,6 +1,6 @@
 import { writable, readable } from 'svelte/store'
 
-export let serverUrl = "http://localhost:3500/"
+export let serverUrl = "http://localhost:3200/"
 if(document.documentURI.endsWith("/ytplayer/")) {
     serverUrl = document.documentURI
 } else if(document.documentURI.endsWith("/ytplayer")) {
