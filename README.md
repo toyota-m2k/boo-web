@@ -20,7 +20,7 @@ private/config.json.sample を参考にしてください。
 - ffprobe: 
  ffmpeg の ffprove(.exe)のパスを指定
 - port: boo-server のポート番号を指定
-- player: サーバールートを指定。例えば、.../react/boo-player/dist などを指定します。
+- player: 各プレーヤーをboo-server から起動する場合に、サーバールート（例えば、.../react/boo-player/dist などを）を指定します。プレーヤーをデバッグ実行(viteのサーバーを利用）する場合は設定不要です。
 
 ### targets.json
 メディアファイル（*.mp4, *.mp3など）を保存しているフォルダのパスを指定します。
@@ -46,10 +46,9 @@ yarn dev
 - svelte: 5500
 - react: 5600
 - vue: 5700
-としています（vute.config.ts で変更可能です）。
-メディアサーバーのポート番号
 
-尚、メディアサーバーのポート番号（デフォルト:3200）を変更した場合は、各アプリの `store/Settings.ts" の serverUrl を変更してください。
+としています（vute.config.ts で変更可能です）。
+尚、メディアサーバーのポート番号（デフォルト:3200）を変更した場合は、各アプリの `store/DebugConfig.ts" の BooServer を変更してください。
 
 ## ビルド + メディアサーバーへの統合
 各アプリを、以下のコマンドでビルドします。
