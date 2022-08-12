@@ -4,15 +4,35 @@ JavaScript用 Web アプリ開発フレームワークのうち、有名どこ�
 
 ## メディアサーバー
 拙作 [boo-server](https://github.com/toyota-m2k/boo-server) を使いました。
-動画プレーヤーアプリの「デバッグ」を開始する前に、メディアサーバーを構成して開始しておいてください。
+尚、boo-server の実行には、[ffmpeg](https://ffmpeg.org/) が必要です。
+
+### メディアサーバのインストール
+```
+git clone https://github.com/toyota-m2k/boo-server.git
+cd boo-server
+yarn install
+（private/config.json, private/targets.jsonを編集）
+yarn start
+```
+
+### config.json
+private/config.json.sample を参考にしてください。
+- ffprobe: 
+ ffmpeg の ffprove(.exe)のパスを指定
+- port: boo-server のポート番号を指定
+- player: サーバールートを指定。例えば、.../react/boo-player/dist などを指定します。
+
+### targets.json
+メディアファイル（*.mp4, *.mp3など）を保存しているフォルダのパスを指定します。
+private/targets.json.sample を参考にしてください。
 
 ## フォルダ構成
 ```
 ./
-    react       React.js で作成した動画プレーヤーアプリ
-    vue         Vue.js で作成した動画プレーヤーアプリ
-    svelte      Svelte.js で作成した動画プレーヤーアプリ
-    README.md   このファイル
+  react       React.js で作成した動画プレーヤーアプリ
+  vue         Vue.js で作成した動画プレーヤーアプリ
+  svelte      Svelte.js で作成した動画プレーヤーアプリ
+  README.md   このファイル
 ```
 
 ## デバッグ

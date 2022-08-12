@@ -1,12 +1,15 @@
 import {retrieveMediaList} from "./BooClient";
+import dc from "./DebugConfig.json"
 
-export let serverUrl = "http://localhost:3200/"
-if(document.documentURI.endsWith("/ytplayer/")) {
-    serverUrl = document.documentURI
-} else if(document.documentURI.endsWith("/ytplayer")) {
-    serverUrl = document.documentURI + '/'
+export let serverUrl:string
+if(import.meta.env.DEV) {
+    serverUrl = dc.BooServer
+} else {
+    serverUrl = document.location.origin
 }
-
+if(!serverUrl.endsWith('/')) {
+    serverUrl += '/'
+}
 export const serverItemCommand:string = `${serverUrl}ytplayer/video`
 
 export function composeMediaUrl(mediaId:string):string {
