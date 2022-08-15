@@ -28,19 +28,33 @@ private/targets.json.sample を参考にしてください。
 
 ## フォルダ構成
 ```
-./
+./packages/
+  common      共通モジュール（デバッグ時のメディアサーバURLを定義しているだけ）
   react       React.js で作成した動画プレーヤーアプリ
   vue         Vue.js で作成した動画プレーヤーアプリ
   svelte      Svelte.js で作成した動画プレーヤーアプリ
   README.md   このファイル
 ```
 
-## デバッグ
-各アプリのディレクトリ内で、次のコマンドで、初期化＋デバッグ用サーバー(vite)を起動します。
+## 初期化
 ```
 yarn install
-yarn dev
 ```
+
+## デバッグ用サーバー(vite)の起動
+React版
+```
+yarn dev-react
+```
+Vue版
+```
+yarn dev-vue
+```
+Svelte版
+```
+yarn dev-svelte
+```
+
 続いて、vscodeやWebStormなどのデバッガで、http://localhost:ポート番号 を開きます。
 ポート番号は、デフォルトで、
 - svelte: 5500
@@ -48,14 +62,15 @@ yarn dev
 - vue: 5700
 
 としています（vute.config.ts で変更可能です）。
-尚、メディアサーバーのポート番号（デフォルト:3200）を変更した場合は、各アプリの `store/DebugConfig.ts" の BooServer を変更してください。
+尚、メディアサーバーのポート番号（デフォルト:3200）を変更した場合は、各アプリの `common/index.ts の booServerUrlForDebug を変更してください。
 
 ## ビルド + メディアサーバーへの統合
 各アプリを、以下のコマンドでビルドします。
 ```
-yarn install
-yarn build
+yarn build-all
 ```
+
+`build-react`, `build-vue`, `build-svelte` のスクリプトで、個別にビルドすることもできます。
 
 メディアサーバーの `private/config.json` の "player" フィールドに、ビルドした、index.htmlの入ったフォルダ(svelte\boo-player\distなど)へのフルパスを記述してサーバーを再起動します。
 
@@ -151,3 +166,15 @@ Vue と React どっちを選ぶ？と聞かれたら、やっぱりReactかな�
     もともと、Vue2 は好きだったので、頑張ってほしいが、今の路線（＝他のフレームワークの`OR`）では、将来にあまり期待が持てない。
     React は・・・私が応援しなくてもきっと大丈夫ｗ
 
+8. ビルド生成物のサイズ Svelte < Vue ≒ React
+   
+   assets(JS, CSSなど)の合計サイズは次の通り。
+   Svelte: 244 KB
+   Vue: 3.93 MB
+   React: 3.87 MB
+
+   VueのAssets には、*.ttf, *.eof などのフォントファイル（計 2.37MB）が含まれている。
+   Reactは、jsファイルのサイズが、3.87 MB もあるが、中を見てみると、大量のSVGパスが含まれていた。
+   使っていないアイコンやフォントが含まれてしまっているのだと思う。
+
+   

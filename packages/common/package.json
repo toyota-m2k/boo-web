@@ -1,0 +1,8 @@
+{
+  "name": "@boo-player/common",
+  "version": "1.0.0",
+  "description": "boo-player common impl",
+  "main": "index.ts",
+  "author": "toyota32768@gmail.com",
+  "license": "MIT"
+}

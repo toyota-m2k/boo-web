@@ -1,9 +1,9 @@
 import {retrieveMediaList} from "./BooClient";
-import dc from "./DebugConfig.json"
+import { booServerUrlForDebug } from '@boo-player/common'
 
 export let serverUrl:string
 if(import.meta.env.DEV) {
-    serverUrl = dc.BooServer
+    serverUrl = booServerUrlForDebug
 } else {
     serverUrl = document.location.origin
 }
