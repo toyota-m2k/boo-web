@@ -6,16 +6,12 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "@boo-player/common": "*"
-  },
+  "dependencies": {},
   "scripts": {
     "build-all": "yarn build-svelte & yarn build-react & yarn build-vue",
-
     "build-svelte": "yarn workspace @boo-player/svelte build",
     "build-react": "yarn workspace @boo-player/react build",
     "build-vue": "yarn workspace @boo-player/svelte build",
-
     "dev-svelte": "yarn workspace @boo-player/svelte dev",
     "dev-react": "yarn workspace @boo-player/react dev",
     "dev-vue": "yarn workspace @boo-player/vue dev"
@@ -29,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/toyota-m2k/boo-web/issues"
   },
-  "homepage": "https://github.com/toyota-m2k/boo-web#readme"
+  "homepage": "https://github.com/toyota-m2k/boo-web#readme",
+  "volta": {
+    "node": "16.16.0",
+    "yarn": "1.22.19"
+  }
 }
