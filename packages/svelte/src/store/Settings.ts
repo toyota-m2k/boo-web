@@ -1,4 +1,4 @@
-import { writable, readable } from 'svelte/store'
+import { writable } from 'svelte/store'
 import { booServerUrlForDebug } from '@boo-player/common'
 
 export let serverUrl:string
@@ -13,7 +13,7 @@ if(!serverUrl.endsWith('/')) {
 
 export const serverItemCommand = `${serverUrl}ytplayer/video`
 
-export const fullscreen = writable<Boolean>(false)
+export const fullscreen = writable<boolean>(false)
 
 export class Rating {
     level?:number
@@ -31,14 +31,14 @@ export class Rating {
     //     this.iconOn = iconOn
     //     this.iconOff = iconOff
     // }
-    constructor(a:any, name?:string, iconOn?:string, iconOff?:string) {
-        if(!name) {
-            Object.assign(this, a)
-        } else {
+    constructor(a:number|Partial<Rating>, name?:string, iconOn?:string, iconOff?:string) {
+        if(typeof a === "number") {
             this.level = a
             this.name = name
             this.iconOn = iconOn
             this.iconOff = iconOff
+        } else {
+            Object.assign(this, a)
         }
     }
 
@@ -66,7 +66,7 @@ export class Rating {
 
     static ratings = [this.dreadful, this.bad, this.normal, this.good, this.excellent]
 
-    static ratingThreshold:number = 3
+    static ratingThreshold = 3
     private static pushedRatingThreshold = 0
 
     static ratingOf(level:number):Rating {
@@ -88,11 +88,11 @@ export class Mark {
     name:string
     iconOn:string
     iconOff:string
-    selected:boolean = false
-    constructor(obj: Partial<Rating>);
+    selected = false
+    constructor(obj: Partial<Mark>);
     constructor(id:number, name:string, iconOn:string, iconOff:string)
-    constructor(obj:any, name?:string, iconOn?:string, iconOff?:string) {
-        if(name) {
+    constructor(obj:number|Partial<Mark>, name?:string, iconOn?:string, iconOff?:string) {
+        if(typeof obj === "number") {
             this.id = obj
             this.name = name
             this.iconOn = iconOn
@@ -189,7 +189,7 @@ export function composeListCommand() {
     if(Rating.ratingThreshold!=Rating.normal.level) {
         sp.append("r", Rating.ratingThreshold.toString())
     }
-    let marks = Mark.getMarksAsQueryValue()
+    const marks = Mark.getMarksAsQueryValue()
     if(marks.length>0) {
         sp.append("m", marks)
     }

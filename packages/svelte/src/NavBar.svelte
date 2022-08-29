@@ -4,7 +4,7 @@
     import SettingDialog from "./dialog/SettingDialog.svelte";
     export let currentTitle = "untitled"
 
-    let openSettingDialog:Boolean = false
+    let openSettingDialog = false
 </script>
 
 <TopAppBar

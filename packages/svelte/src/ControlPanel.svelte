@@ -1,17 +1,17 @@
 <script lang="ts">
     import Slider from '@smui/slider';
     import IconButton, { Icon } from '@smui/icon-button';
-    import {createEventDispatcher, onMount} from 'svelte';
+    import {createEventDispatcher} from 'svelte';
     import {fullscreen} from "./store/Settings.js";
     const dispatch = createEventDispatcher()
 
-    export let playing:Boolean
-    export let duration:Number = 100
-    export let position:Number = 0
+    export let playing = false
+    export let duration = 100
+    export let position = 0
 
     $: console.log(`playing = ${playing} duration=${duration}`)
 
-    function nop() {}
+    // function nop() {}
 </script>
 
 <div class="control-panel-view">
@@ -24,7 +24,7 @@
     <div style:width="100%">
         <Slider class="slider" min={0} max={duration} bind:value={position} color="secondary"/>
     </div>
-    <IconButton class="material-icons" on:click={nop} toggle bind:pressed={$fullscreen} style="ink-color(#red)">
+    <IconButton class="material-icons" toggle bind:pressed={$fullscreen} style="ink-color(#red)">
         <Icon class="material-icons">open_in_full</Icon>
         <Icon class="material-icons" on>close_fullscreen</Icon>
     </IconButton>

@@ -1,21 +1,18 @@
 <script lang="ts">
-  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import NavBar from "./NavBar.svelte";
   import BodyView from "./BodyView.svelte";
-  import IconButton from '@smui/icon-button';
   import MediaListView from "./MediaListView.svelte";
   import PlayerView from "./PlayerView.svelte";
   import {MediaFile, retrieveMediaList, mediaList} from "./store/BooClient";
-  import {onMount, tick} from 'svelte';
+  import {onMount} from 'svelte';
   import {fullscreen} from "./store/Settings.js";
-  import { fade, slide } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
+  import { fade } from 'svelte/transition';
 
   export let margin = "8px"
-  let clientWidth
-  let clientHeight
-  let offsetWidth
-  let offsetHeight
+  // let clientWidth
+  // let clientHeight
+  // let offsetWidth
+  // let offsetHeight
   let rawNavBarHeight
   let navBarHeight
   // let windowInnerWidth
@@ -41,7 +38,7 @@
   }
 
 
-  function incrementIndex(inc:Number):Number {
+  function incrementIndex(inc:number):number {
     if(!currentMedia) return -1
     let list = $mediaList
     if(!list || list.length==0) -1

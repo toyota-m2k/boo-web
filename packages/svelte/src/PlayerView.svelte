@@ -1,8 +1,6 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
     import {MediaFile} from "./store/BooClient";
     import ControlPanel from "./ControlPanel.svelte";
-    import { fade, slide } from 'svelte/transition';
     import { tweened } from 'svelte/motion';
     import { cubicOut } from 'svelte/easing';
 
@@ -12,12 +10,16 @@
     let duration
     let currentTime
     let ended
-    let paused
+    let paused = false
 
-    let showPanel:Boolean = false
+    let showPanel = false
     // let controlPanel
 
-    let controlPanelOpacity = tweened(0, {duration:500, easing:cubicOut})
+    // controlPanelOpacity は Tweened で、$controlPanelOpacity=n は、controlPanelOpacity.set(n) なので、controlPanelOpacity 再代入されないのだが、
+    // WebStorm が、これを再代入とみなして、"Variable initializer is redundant" というワーニングを出す。
+    // どうしようもないので、明示的にワーニングを黙らせる。
+    // noinspection JSUnusedAssignment
+    const controlPanelOpacity = tweened(0, {duration:500, easing:cubicOut})
 
     $: if(showPanel) {
             $controlPanelOpacity = 1
@@ -80,7 +82,7 @@
             bind:ended
             autoplay
             >
-            <track kind="captions">
+            <track kind="captions" src="">
         </video>
         <!--
             最初は、アニメーションするために、transition:fade を指定して、

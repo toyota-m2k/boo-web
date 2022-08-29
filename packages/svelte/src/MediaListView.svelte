@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount, createEventDispatcher } from 'svelte';
     import {MediaFile} from "./store/BooClient";
     import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
 

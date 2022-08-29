@@ -6,10 +6,10 @@
     import FormField from '@smui/form-field';
     import { Svg } from '@smui/common/elements';
     import Slider from '@smui/slider';
-    import {onMount, tick} from 'svelte';
+    import {onMount} from 'svelte';
     import { SourceType, Mark, Rating, pushCurrentSettings, popCurrentSettings } from '../store/Settings'
     import {retrieveMediaList} from "../store/BooClient";
-    import classMap from '@smui/common'
+    // import classMap from '@smui/common'
     export let openSettingDialog
     // let sourceMode='All'
     // let [markStar, markFlag, markHeart] = []
@@ -18,7 +18,7 @@
     // let currentRatingIcon = Rating.normal.iconOff
     $: currentRatingIcon = Rating.ratingOf(Rating.ratingThreshold).iconOff
 
-    let done:boolean = false
+    let done = false
 
     onMount(()=>{
         console.log("dialog mounted.")
@@ -98,7 +98,7 @@
         <Button on:click={onDone}>
             <Label>OK</Label>
         </Button>
-        <Button on:click={() => {}}>
+        <Button>
             <Label>Cancel</Label>
         </Button>
     </Actions>
