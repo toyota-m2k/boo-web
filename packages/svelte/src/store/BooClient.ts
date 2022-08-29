@@ -1,5 +1,4 @@
-import { writable, readable } from 'svelte/store'
-import type {Readable} from "svelte/types/runtime/store";
+import { writable } from 'svelte/store'
 import {composeListCommand, serverItemCommand, serverUrl} from './Settings'
 
 export class MediaFile {
@@ -17,23 +16,23 @@ export class MediaFile {
         this.duration = duration
     }
 
-    public mimeType():string {
-        switch(this.type) {
-            case "mp3": return "audio/mpeg"
-            case "mp4": return "video/mp4"
-            default: return "video/mp4"
-        }
-    }
-    public isVideo():boolean {
-        return this.type=="mp3"
-    }
+    // public mimeType():string {
+    //     switch(this.type) {
+    //         case "mp3": return "audio/mpeg"
+    //         case "mp4": return "video/mp4"
+    //         default: return "video/mp4"
+    //     }
+    // }
+    // public isVideo():boolean {
+    //     return this.type=="mp3"
+    // }
 
-    public url():String {
+    public url():string {
         return `${serverItemCommand}?id=${this.id}`
     }
 }
 
-let currentUrl:String
+let currentUrl:string
 export const mediaList = writable<Array<MediaFile>>([])
 export const error = writable<string|null>(null)
 
@@ -60,7 +59,7 @@ export function retrieveMediaList() {
             // });
             const medias = []
             for(let i=0,ci=json.list.length; i<ci;i++) {
-                let v = json.list[i]
+                const v = json.list[i]
                 medias.push(new MediaFile(v.id, v.type, v.name, v.size, v.duration))
             }
             currentUrl = url

@@ -12,12 +12,12 @@
     export let maxDrawerRatio = 0.8
     // export let drawerWidth = 400
     export let trackerWidth=5
-    let viewWidth:Number = 800
-    let dragging:Boolean = false
-    let orgDrawerWidth:Number = 400
-    let clickX:Number = 0
+    let viewWidth = 800
+    let dragging = false
+    let orgDrawerWidth = 400
+    let clickX = 0
     let tracker;
-    const drawerWidth = tweened<Number>(400, {
+    const drawerWidth = tweened<number>(400, {
         duration: (from, to) => {
             return Math.abs(to-from)
         },
